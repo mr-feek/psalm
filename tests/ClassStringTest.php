@@ -61,6 +61,17 @@ class ClassStringTest extends TestCase
     public function providerValidCodeParse()
     {
         return [
+            'accessConstantOnClassStringVariable' => [
+                '<?php
+                    class Beep {
+                        /** @var string */
+                        public static $boop = "boop";
+                    }
+
+                    $beep = Beep::class;
+                    echo $beep::$boop;
+                ',
+            ],
             'arrayOfClassConstants' => [
                 '<?php
                     /**

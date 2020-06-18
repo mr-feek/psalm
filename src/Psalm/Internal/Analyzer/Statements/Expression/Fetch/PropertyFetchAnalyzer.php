@@ -1088,6 +1088,16 @@ class PropertyFetchAnalyzer
 
             $statements_analyzer->node_data = clone $statements_analyzer->node_data;
 
+            $class_analysis_result = ExpressionAnalyzer::analyze($statements_analyzer, $stmt->class, $context);
+            $stmt_class_type = $statements_analyzer->node_data->getType($stmt->class);
+
+            if (!$stmt_class_type->hasObjectType()) {
+                $statements_analyzer->node_data = $old_data_provider;
+                $statements_analyzer->node_data->setType($stmt->class, $stmt_class_type ?: Type::getMixed());
+
+                return $class_analysis_result;
+            }
+
             $fake_instance_property = new PhpParser\Node\Expr\PropertyFetch(
                 $stmt->class,
                 $stmt->name,
